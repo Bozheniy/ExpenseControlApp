@@ -1,0 +1,31 @@
+﻿<Window x:Class="ExpenseControlApp.Views.CategoriesEntryPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ExpenseControlApp.Views"
+        xmlns:vm="clr-namespace:ExpenseControlApp.ViewModels"
+        mc:Ignorable="d"
+        Title="Редактирование категории" Height="170" Width="270"
+        Name="CategoriesEditPageWindow">
+    
+    <Window.DataContext>
+        <vm:MainWindowsViewsModel/>
+    </Window.DataContext>
+    
+    <DockPanel Margin="5">
+        <UniformGrid DockPanel.Dock="Bottom" HorizontalAlignment="Right">
+            <Button  Content="OK" Margin="10,0" Padding="35,5"  IsDefault="True" 
+                     Command="{Binding EditCategoryCommand}"
+                     CommandParameter="{Binding ElementName=CategoriesEditPageWindow}"/>
+            <Button Content="Cancel" Margin="10,0" IsCancel="True"/>
+        </UniformGrid>
+        <StackPanel DockPanel.Dock="Top">
+            <TextBlock Text="Введите наименование категори" Margin="5" FontSize="14"/>
+            <WrapPanel >
+                <TextBox  Text="{Binding CategoriesViewModel.Name}" Width="230"/>
+            </WrapPanel>
+        </StackPanel>
+    </DockPanel>
+
+</Window>

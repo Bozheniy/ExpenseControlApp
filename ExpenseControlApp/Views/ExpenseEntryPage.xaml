@@ -1,0 +1,51 @@
+﻿<Window x:Class="ExpenseControlApp.Views.ExpenseEntryPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm ="clr-namespace:ExpenseControlApp.ViewModels"
+        xmlns:local="clr-namespace:ExpenseControlApp.Views"
+        mc:Ignorable="d"
+        Title="Редактирование расходов" Height="250" Width="400"
+        Name="ExpenseEditPageWindow">
+    
+    <Window.DataContext>
+        <vm:MainWindowsViewsModel/>
+    </Window.DataContext>
+    
+    <DockPanel>
+        <UniformGrid DockPanel.Dock="Bottom" HorizontalAlignment="Right">
+            <Button Content="OK" Margin="10,0" Padding="35,5" IsDefault="True"
+                    Command="{Binding EditExpensesCommand}"
+                    CommandParameter="{Binding ElementName=ExpenseEditPageWindow}"/>
+            <Button Content="Cancel" Margin="10,0" IsCancel="True"/>
+        </UniformGrid>
+        <Grid Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="Период"/>
+            <DatePicker SelectedDate="{Binding ExpensesViewModel.DateTime}" Grid.Column="1" Grid.Row="0"/>
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="Категория"/>
+            <ComboBox Grid.Column="1" Grid.Row="1"
+                      ItemsSource="{Binding AllCategories}"
+                      SelectedItem="{Binding ExpensesViewModel.Categories}"
+                      DisplayMemberPath="Name">
+            </ComboBox>
+            <TextBlock Grid.Column="0" Grid.Row="2" Text="Стоимость"/>
+            <TextBox Grid.Column="1" Grid.Row="2"
+                     Text="{Binding ExpensesViewModel.Sum}"/>
+            <TextBlock Grid.Column="0" Grid.Row="3" Text="Комментарий"/>
+            <TextBox  Grid.Column="1" Grid.Row="3"
+                      Text="{Binding ExpensesViewModel.Comment}"/>
+        </Grid>
+    </DockPanel>
+
+</Window>

@@ -1,0 +1,110 @@
+﻿<Window x:Class="ExpenseControlApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm ="clr-namespace:ExpenseControlApp.ViewModels"
+        xmlns:local="clr-namespace:ExpenseControlApp"
+        mc:Ignorable="d"
+        Title="Программа учета расходов" Height="450" Width="800">
+
+    <Window.DataContext>
+        <vm:MainWindowsViewsModel/>
+    </Window.DataContext>
+    
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Файл">
+                <MenuItem Header="Выход" Command="{Binding ExitAppCommand}"/>
+            </MenuItem>
+        </Menu>
+
+        <TabControl SelectedItem="{Binding SelectedTabItem}">
+            <TabItem Header="Расходы">
+                <DockPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="380*"/>
+                            <ColumnDefinition Width="0"/>
+                            <ColumnDefinition Width="390*"/>
+                        </Grid.ColumnDefinitions>
+                        <DataGrid Grid.Column="0" AutoGenerateColumns="False" CanUserAddRows="False" Grid.ColumnSpan="2"
+                                  ItemsSource="{Binding AllExpenses}" 
+                                  SelectedItem="{Binding SelectedExpensesItem}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Категория" Width="Auto" Binding="{Binding ExpensesCategory.Name}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Сумма" Width="Auto" Binding="{Binding Sum}"/>
+                                <DataGridTextColumn Header="Дата" Width="Auto" Binding="{Binding DateTime, StringFormat=dd.MM.yyyy}"/>
+                                <DataGridTextColumn Header="Комментарий" Width="*" Binding="{Binding Comment}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <DockPanel Grid.Column="2">
+                            <UniformGrid DockPanel.Dock="Bottom" HorizontalAlignment="Right">
+                                <Button  Content="OK" Margin="10,0" Padding="35,5" IsDefault="True"
+                                         Command="{Binding CreateExpensesCommand}"/>
+                            </UniformGrid>
+                            <Grid Margin="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Column="0" Grid.Row="0" Text="Период"/>
+                                <DatePicker SelectedDate="{Binding ExpensesViewModel.DateTime}" Grid.Column="1" Grid.Row="0"/>
+                                <TextBlock Grid.Column="0" Grid.Row="1" Text="Категория"/>
+                                <ComboBox Grid.Column="1" Grid.Row="1"
+                                          ItemsSource="{Binding AllCategories}"
+                                          SelectedItem="{Binding ExpensesViewModel.Categories}"
+                                          DisplayMemberPath="Name">
+                                </ComboBox>
+                                <TextBlock Grid.Column="0" Grid.Row="2" Text="Стоимость"/>
+                                <TextBox Grid.Column="1" Grid.Row="2"
+                                         Text="{Binding ExpensesViewModel.Sum}"/>
+                                <TextBlock Grid.Column="0" Grid.Row="3" Text="Комментарий"/>
+                                <TextBox  Grid.Column="1" Grid.Row="3"
+                                          Text="{Binding ExpensesViewModel.Comment}"/>
+                            </Grid>
+                        </DockPanel>
+                    </Grid>
+                </DockPanel>
+                <TabItem.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Удалить" Command="{Binding DeleteExpensesCommand}"/>
+                        <MenuItem Header="Редактировать" Command="{Binding OpenNewExpenseEntryPage}"/>
+                    </ContextMenu>
+                </TabItem.ContextMenu>
+            </TabItem>
+            <TabItem Header="Категории">
+                <StackPanel>
+                    <TextBlock Text="Введите наименование категори" Margin="5" FontSize="14"/>
+                    <WrapPanel >
+                        <TextBox Text="{Binding CategoriesViewModel.Name}"  Width="300"/>
+                        <Button Grid.Column="1" Content="Добавить" Height="20"  Margin="5"
+                                Command="{Binding CreateCategoryCommand}"/>
+                    </WrapPanel>
+                    <TextBlock Text="Наименование" HorizontalAlignment="Center" FontSize="14"/>
+                    <Grid >
+                        <DataGrid ItemsSource="{Binding AllCategories}"
+                                  SelectedItem="{Binding SelectedCategoriesItem}"
+                              AutoGenerateColumns="False" CanUserAddRows="False" >
+                            <DataGrid.Columns>
+                                <DataGridTextColumn  Header="Категория" Width="*" Binding="{Binding Name}" IsReadOnly="True"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </StackPanel>
+                <TabItem.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Удалить" Command="{Binding DeleteCategoryCommand}"/>
+                        <MenuItem Header="Редактировать" Command="{Binding OpenNewCategoriesEntryPage}"/>
+                    </ContextMenu>
+                </TabItem.ContextMenu>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>
